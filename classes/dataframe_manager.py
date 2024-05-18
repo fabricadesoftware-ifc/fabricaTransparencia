@@ -18,6 +18,32 @@ class DataframeManager:
         if "month" not in st.session_state:
             st.session_state.month = "01"
 
+    def get_df_month_values(self, months):
+        self.to_float()
+        visible_columns = [
+            'Natureza Despesa',
+            'Mês',
+            'Empenhado',
+            'Liquidado',
+        ]
+
+        df = st.session_state.df_master[visible_columns]
+        df_month_values = df.copy()
+        # df_month_values = df_month_values[df_month_values['Mês'].isin([months])]
+        if isinstance(months, str):
+            months = [months]
+        
+        df_month_values = df_month_values[df_month_values["Mês"].isin(months)]
+        df_month_values = (
+            df_month_values.groupby(["Natureza Despesa"])[["Empenhado", "Liquidado"]]
+            .sum()
+            .reset_index()
+        )
+        df_month_values["Empenhado"] = df_month_values["Empenhado"].map("R$ {:,.2f}".format)
+        df_month_values["Liquidado"] = df_month_values["Liquidado"].map("R$ {:,.2f}".format)
+
+        return df_month_values
+
     def get_df_month_detail(self, value='Empenhado'):
         self.to_float()
         visible_columns = [
@@ -34,14 +60,13 @@ class DataframeManager:
         pivoted = pd.pivot_table(df_month_detail, values=value, index='Natureza Despesa', columns='Mês')
         pivoted = pivoted.fillna(0)
         raw_datas = pivoted.reset_index()
-        
+
         formatted_datas = pivoted.copy()
         formatted_columns = {col: formatted_months(col) for col in formatted_datas.columns}
         formatted_datas = formatted_datas.rename(columns=formatted_columns).applymap(lambda x: 'R$ {:,.2f}'.format(x))
 
-        
         return [raw_datas, formatted_datas]
-    
+
     def get_options_main(self):
         self.to_float()
         visible_columns = [
@@ -96,15 +121,14 @@ class DataframeManager:
         committed_formatted = "{:,.2f}".format(committed)
         settled_formatted = "{:,.2f}".format(settled)
         balance_formatted = "{:,.2f}".format(balance)
-        
+
         return [committed_formatted, settled_formatted, balance_formatted]
 
     def clean_df(self):
         pass
-        
+
     def to_float(self):
         if st.session_state.df_master['Empenhado'].apply(lambda x: isinstance(x, str)).any():
             st.session_state.df_master['Empenhado'] = st.session_state.df_master['Empenhado'].str.replace('.', '').str.replace(',', '.').astype(float)
         if st.session_state.df_master['Liquidado'].apply(lambda x: isinstance(x, str)).any():
             st.session_state.df_master['Liquidado'] = st.session_state.df_master['Liquidado'].str.replace('.', '').str.replace(',', '.').astype(float)
-
