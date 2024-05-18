@@ -22,11 +22,9 @@ def by_nature(onlyTable=False):
 
         raw_datas = []
 
-        for month in st.session_state.month:
-            print(month)
-            st.write(month)
-            df = df_manager.get_df_month_values(unformatted_months(month))
-            raw_datas.append(df)
+        unformatted_months_list = [unformatted_months(month) for month in st.session_state.month]
+        df = df_manager.get_df_month_values(unformatted_months_list)
+        raw_datas.append(df)
 
         if len(raw_datas) > 0:
             raw_datas_df = pd.concat(raw_datas)

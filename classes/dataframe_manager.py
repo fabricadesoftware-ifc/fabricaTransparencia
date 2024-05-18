@@ -18,6 +18,7 @@ class DataframeManager:
         if "month" not in st.session_state:
             st.session_state.month = "01"
 
+
     def get_df_month_values(self, months):
         self.to_float()
         visible_columns = [
@@ -28,21 +29,34 @@ class DataframeManager:
         ]
 
         df = st.session_state.df_master[visible_columns]
-        df_month_values = df.copy()
-        # df_month_values = df_month_values[df_month_values['Mês'].isin([months])]
         if isinstance(months, str):
             months = [months]
-        
-        df_month_values = df_month_values[df_month_values["Mês"].isin(months)]
+
+        df_month_values = df[df["Mês"].isin(months)]
+        print("Dados Filtrados")
+        print(df_month_values)
+        visible_columns = [
+            'Natureza Despesa',
+            'Empenhado',
+            'Liquidado',
+        ]
+        df_month_values = df_month_values[visible_columns]
         df_month_values = (
-            df_month_values.groupby(["Natureza Despesa"])[["Empenhado", "Liquidado"]]
+            df_month_values.groupby(["Natureza Despesa"])[
+                ["Empenhado", "Liquidado"]
+            ]
             .sum()
             .reset_index()
         )
+        total_empenhado = df_month_values["Empenhado"].sum()
+        total_liquidado = df_month_values["Liquidado"].sum()
+        df_total = pd.DataFrame({"Natureza Despesa": ["Total"], "Empenhado": [total_empenhado], "Liquidado": [total_liquidado]})
+        df_month_values = pd.concat([df_month_values, df_total])
         df_month_values["Empenhado"] = df_month_values["Empenhado"].map("R$ {:,.2f}".format)
         df_month_values["Liquidado"] = df_month_values["Liquidado"].map("R$ {:,.2f}".format)
 
         return df_month_values
+
 
     def get_df_month_detail(self, value='Empenhado'):
         self.to_float()
