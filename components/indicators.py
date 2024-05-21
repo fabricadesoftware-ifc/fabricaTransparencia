@@ -9,7 +9,7 @@ def indicators():
 
     with row[0]:
         st.write(f"## **:black[R$ {committed}]**")
-        st.caption("*Montante Total Empenhado*")
+        st.caption("*Montante Empenhado*")
 
     with row[1]:
         st.write(f"## **:black[R$ {settled}]**")
