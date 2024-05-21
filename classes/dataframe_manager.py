@@ -18,7 +18,6 @@ class DataframeManager:
         if "month" not in st.session_state:
             st.session_state.month = "01"
 
-
     def get_df_month_values(self, months):
         self.to_float()
         visible_columns = [
@@ -33,8 +32,8 @@ class DataframeManager:
             months = [months]
 
         df_month_values = df[df["Mês"].isin(months)]
-        print("Dados Filtrados")
-        print(df_month_values)
+        # print("Dados Filtrados")
+        # print(df_month_values)
         visible_columns = [
             'Natureza Despesa',
             'Empenhado',
@@ -57,6 +56,41 @@ class DataframeManager:
 
         return df_month_values
 
+    def get_df_month_monetary_values(self, months):
+        self.to_float()
+        visible_columns = [
+            "Natureza Despesa",
+            "Mês",
+            "Empenhado",
+            "Liquidado",
+        ]
+
+        df = st.session_state.df_master[visible_columns]
+        if isinstance(months, str):
+            months = [months]
+
+        df_month_values = df[df["Mês"].isin(months)]
+        # print("Dados Filtrados")
+        # print(df_month_values)
+        visible_columns = [
+            "Natureza Despesa",
+            "Empenhado",
+            "Liquidado",
+        ]
+        df_month_values = df_month_values[visible_columns]
+        df_month_values = (
+            df_month_values.groupby(["Natureza Despesa"])[["Empenhado", "Liquidado"]]
+            .sum()
+            .reset_index()
+        )
+        # df_month_values["Empenhado"] = df_month_values["Empenhado"].map(
+        #     "R$ {:,.2f}".format
+        # )
+        # df_month_values["Liquidado"] = df_month_values["Liquidado"].map(
+        #     "R$ {:,.2f}".format
+        # )
+
+        return df_month_values
 
     def get_df_month_detail(self, value='Empenhado'):
         self.to_float()

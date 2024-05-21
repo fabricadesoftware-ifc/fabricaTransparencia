@@ -34,5 +34,9 @@ def by_nature(onlyTable=False):
         if onlyTable:
             st.table(raw_datas_df)
         else:
-            chart_options = df_manager.get_df_month_values("04/2024")
+            # chart_options = df_manager.get_df_month_values("04/2024")
+            print('lista de meses:')
+            print(unformatted_months_list)
+            chart_options = df_manager.get_df_month_monetary_values(unformatted_months_list)
+            print(chart_options)
             st_echarts(chart_options, height="500px", key=f"{st.session_state}df_moth_detail_comitted")
