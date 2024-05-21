@@ -9,12 +9,12 @@ def indicators():
 
     with row[0]:
         st.write(f"## **:black[R$ {committed}]**")
-        st.caption("*Total de Empenhos a Liquidar*")
+        st.caption("*Montante Total Empenhado*")
 
     with row[1]:
         st.write(f"## **:black[R$ {settled}]**")
-        st.caption("*Total de Empenhos Pagos*")
+        st.caption("*Montante Liquidado*")
 
     with row[2]:
-        st.write(f"## **:black[R$ {balance}]**")
-        st.caption("*Saldo Disponível*")
+        st.write(f"## **:red[R$ {balance}]**")
+        st.caption("*Montante Pendente de Liquidação*")
