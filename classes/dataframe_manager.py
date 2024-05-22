@@ -32,8 +32,6 @@ class DataframeManager:
             months = [months]
 
         df_month_values = df[df["Mês"].isin(months)]
-        # print("Dados Filtrados")
-        # print(df_month_values)
         visible_columns = [
             'Natureza Despesa',
             'Empenhado',
@@ -56,7 +54,7 @@ class DataframeManager:
 
         return df_month_values
 
-    def get_df_month_monetary_values(self, months):
+    def get_df_month_monetary_values(self, months, tipo):
         self.to_float()
         visible_columns = [
             "Natureza Despesa",
@@ -66,12 +64,12 @@ class DataframeManager:
         ]
 
         df = st.session_state.df_master[visible_columns]
-        if isinstance(months, str):
-            months = [months]
-
         df_month_values = df[df["Mês"].isin(months)]
-        # print("Dados Filtrados")
-        # print(df_month_values)
+        df_month_values = (
+            df_month_values.groupby(["Mês", "Natureza Despesa"])[["Empenhado", "Liquidado"]]
+            .sum()
+            .reset_index()
+        )
         visible_columns = [
             "Natureza Despesa",
             "Empenhado",
@@ -79,18 +77,17 @@ class DataframeManager:
         ]
         df_month_values = df_month_values[visible_columns]
         df_month_values = (
-            df_month_values.groupby(["Natureza Despesa"])[["Empenhado", "Liquidado"]]
+            df_month_values.groupby(["Natureza Despesa"])[
+                ["Empenhado", "Liquidado"]
+            ]
             .sum()
             .reset_index()
         )
-        # df_month_values["Empenhado"] = df_month_values["Empenhado"].map(
-        #     "R$ {:,.2f}".format
-        # )
-        # df_month_values["Liquidado"] = df_month_values["Liquidado"].map(
-        #     "R$ {:,.2f}".format
-        # )
+        raw_datas = df_month_values.copy()
 
-        return df_month_values
+        visible_columns = ["Natureza Despesa", tipo]
+        raw_datas = raw_datas[visible_columns]
+        return raw_datas
 
     def get_df_month_detail(self, value='Empenhado'):
         self.to_float()
