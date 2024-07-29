@@ -8,7 +8,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="pr-4">
+    <div>
       <v-data-table
           :items="items || []"
           :headers="headers"

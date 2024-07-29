@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 import { use } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { BarChart } from 'echarts/charts'
@@ -20,14 +20,13 @@ use([
 ])
 
 provide(THEME_KEY, 'default')
+
 const headers = [
   { title: 'Natureza', align: 'start', key: 'nature' },
   { title: 'Empenhado (R$)', align: 'end', key: 'committed' },
   { title: 'Liquidado (R$)', align: 'end', key: 'liquidated' },
 ]
-
 const search = ref('')
-
 </script>
 
 <template>
@@ -40,7 +39,6 @@ const search = ref('')
             v-model="search"
             label="Buscar por natureza..."
             prepend-inner-icon="mdi-magnify"
-            class="px-4"
             variant="outlined"
             single-line
         ></v-text-field>

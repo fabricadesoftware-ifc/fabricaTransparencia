@@ -7,6 +7,7 @@
     <GlobalIndicators />
     <MainChart />
     <AllNatureChart />
+    <MainTabs />
   </div>
 </template>
 

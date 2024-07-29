@@ -90,6 +90,10 @@ class DataframeManager:
                 "liquidated": df_by_all_nature['Liquidado (R$)'].tolist()[i]
             } for i in range(len(df_by_all_nature))],
         }
+    
+    def get_months(self):
+        print(self.df_master['mes'].unique())
+        return ['ola', 'ola2']
 
     def to_float(self):
         if self.df_master['Empenhado'].apply(lambda x: isinstance(x, str)).any():

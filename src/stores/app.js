@@ -29,6 +29,7 @@ export const useAppStore = defineStore("app",
             yAxis: null,
             dataframe: null,
           },
+          months: []
         }
       });
 
@@ -38,7 +39,8 @@ export const useAppStore = defineStore("app",
       const committed = computed(() => state.datas.globalIndicators.committed);
       const settled = computed(() => state.datas.globalIndicators.settled);
       const balance = computed(() => state.datas.globalIndicators.balance);
-      
+      const months = computed(() => state.datas.months);
+
       const mainDataframe = computed(() => state.datas.mainChart.dataframe);
       
       const mainChart = computed(() => {
@@ -189,6 +191,7 @@ export const useAppStore = defineStore("app",
           committed,
           settled,
           balance,
+          months,
           mainChart,
           mainDataframe,
           allNaturesChart,

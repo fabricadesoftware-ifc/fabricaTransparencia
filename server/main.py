@@ -34,6 +34,7 @@ def read_root():
                 "globalIndicators": df_manager.get_global_indicators(),
                 "mainChart": df_manager.main_chart(),
                 "allNaturesChart": df_manager.all_natures_chart(),
+                "months": df_manager.get_months(),
             }
         }
     except Exception as e:
