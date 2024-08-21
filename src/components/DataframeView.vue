@@ -18,7 +18,7 @@ const props = defineProps({
           :search="search ? search.toLowerCase() : ''"
       >
         <template v-slot:item="{ item, index }">
-          <tr :class="{'text-black font-weight-bold': index === items.length - 1}">
+          <tr :class="{'font-weight-bold': index === items.length - 1}">
             <td>{{ item.nature || item.month }}</td>
             <td class="text-right">{{ item.committed }}</td>
             <td class="text-right">{{ item.liquidated }}</td>

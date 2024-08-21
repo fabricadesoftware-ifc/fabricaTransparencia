@@ -13,10 +13,10 @@ const tab = ref('months')
         <v-tab value="datas">Ver Dados Brutos</v-tab>
       </v-tabs>
   
-      <v-card-text>
+      <v-card-text class="px-0 mx-0">
         <v-tabs-window v-model="tab">
-          <v-tabs-window-item value="months">
-            months
+          <v-tabs-window-item value="months" class="mx-0 px-0">
+            <MonthTab />
           </v-tabs-window-item>
           <v-tabs-window-item value="natures">
             natures

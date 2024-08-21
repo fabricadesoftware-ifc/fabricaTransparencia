@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { computed, reactive } from "vue";
+import { v4 as uuidv4 } from 'uuid';
 import AppService from "@/services/app";
 
 export const useAppStore = defineStore("app",
@@ -8,6 +9,7 @@ export const useAppStore = defineStore("app",
         loading: false,
         error: null,
         theme: "light",
+        monthsInputFilter: [],
         datas: {
           globalIndicators: {
             committed: 0,
@@ -29,7 +31,13 @@ export const useAppStore = defineStore("app",
             yAxis: null,
             dataframe: null,
           },
-          months: []
+          byMonthChart: {
+            "Natureza Despesa": {},
+            "Empenhado": {},
+            "Liquidado": {},
+            "Filtro": [],
+          },
+          months: [],
         }
       });
 
@@ -40,7 +48,7 @@ export const useAppStore = defineStore("app",
       const settled = computed(() => state.datas.globalIndicators.settled);
       const balance = computed(() => state.datas.globalIndicators.balance);
       const months = computed(() => state.datas.months);
-
+      const monthsInput = computed(() => state.monthsInputFilter)
       const mainDataframe = computed(() => state.datas.mainChart.dataframe);
       
       const mainChart = computed(() => {
@@ -51,7 +59,7 @@ export const useAppStore = defineStore("app",
             data: ["Empenhado", "Liquidado"], 
             left: "1%",
           },
-          grid: { left: "2%", right: "23.5%", bottom: "3%", containLabel: true },
+          grid: { left: "2%", right: "27%", bottom: "3%", containLabel: true },
           toolbox: { feature: { saveAsImage: {} } },
           xAxis: {
             type: "category",
@@ -78,7 +86,7 @@ export const useAppStore = defineStore("app",
               name: "Soma Total (R$)",
               type: "pie",
               radius: "60%",
-              center: ["89%", "50%"],
+              center: ["87%", "50%"],
               emphasis: {
                 label: {
                   show: true,
@@ -161,8 +169,68 @@ export const useAppStore = defineStore("app",
         };
       });
 
-      const setTheme = (theme) => {
-        state.theme = theme;
+      const byMonthChart = computed(() => {
+        let data1 = []
+        let data2 = []
+        if(state.datas?.byMonthChart?.['Natureza Despesa']) {
+          data1 = Object.keys(state.datas.byMonthChart['Natureza Despesa']).map(key => {
+            if (!(key in monthsFilter)) return
+            return {
+              value: state.datas.byMonthChart['Liquidado'][key],
+              name: state.datas.byMonthChart['Natureza Despesa'][key]
+            };
+          })
+          data2 = Object.keys(state.datas.byMonthChart['Natureza Despesa']).map(key => {
+            return {
+              value: state.datas.byMonthChart['Empenhado'][key],
+              name: state.datas.byMonthChart['Natureza Despesa'][key]
+            };
+          })
+        }
+
+        return {
+          legend: { left: '1%', right: '2%', itemGap: 24 },
+          tooltip: { trigger: 'axis', showContent: false },
+          series: [
+            {
+              type: 'pie',
+              id: String(uuidv4()),
+              radius: '50%',
+              center: ['25%', '70%'],
+              label: {
+                formatter: (params) => `${params.percent}% | R$ ${params.value}`
+              },
+              encode: {
+                itemName: 'Natureza Despesa',
+                value: 'Empenhado',
+                tooltip: 'Empenhado'
+              },
+              data: data1
+            },
+            {
+              type: 'pie',
+              id: String(uuidv4()),
+              radius: '50%',
+              center: ['75%', '70%'],
+              label: {
+                formatter: (params) => {
+                  console.log(params)
+                  return `${params.percent}% | R$ ${params.value}`
+                }
+              },
+              encode: {
+                itemName: 'Natureza Despesa',
+                value: 'Liquidado',
+                tooltip: 'Liquidado'
+              },
+              data: data2
+            }
+          ]
+        }
+      })
+
+      const setTheme = (param) => {
+        state.theme = param;
       }
 
       const getCharts = async () => {
@@ -176,28 +244,35 @@ export const useAppStore = defineStore("app",
           }
       }
 
-      const converterReal = (value) => {
+      const converterReal = (param) => {
         return new Intl.NumberFormat('pt-BR', {
           style: 'currency',
           currency: 'BRL'
-        }).format(value);
+        }).format(param);
+      }
+
+      const filteringMonths = (param) => {
+        const lenghtMonth = Object.keys(state.datas?.byMonthChart?.["Natureza Despesa"]).lenght
+        state.datas.byMonthChart["Filtro"] =  param
       }
 
       return {
-          state,
-          themeColor,
-          isDark,
-          isLoading,
-          committed,
-          settled,
-          balance,
-          months,
-          mainChart,
-          mainDataframe,
-          allNaturesChart,
-          allNaturesDataframe,
-          setTheme,
-          getCharts,
+        state,
+        themeColor,
+        isDark,
+        isLoading,
+        committed,
+        settled,
+        balance,
+        months,
+        monthsInput,
+        mainChart,
+        mainDataframe,
+        allNaturesChart,
+        allNaturesDataframe,
+        byMonthChart,
+        setTheme,
+        getCharts,
       };
     }
 )

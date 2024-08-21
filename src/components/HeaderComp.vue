@@ -17,7 +17,7 @@ const state = ref(['Santa Catarina'])
       Despesas Liquidadas.
     </p>
     <v-row>
-      <v-col cols="12" lg="3" sm="6">
+      <v-col cols="12" md="3">
         <v-autocomplete
           v-model="state"
           :items="['Santa Catarina', '...']"
@@ -25,7 +25,7 @@ const state = ref(['Santa Catarina'])
           variant="outlined"
         />
       </v-col>
-      <v-col cols="12" lg="3" sm="6">
+      <v-col cols="12" md="3">
         <v-autocomplete
           v-model="school"
           :items="['Araquari', '...']"
