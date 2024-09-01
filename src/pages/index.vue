@@ -13,7 +13,6 @@
 
 <script setup>
 import { useAppStore } from '@/stores/app';
-import MainTabs from '@/components/MainTabs.vue';
 
 const appStore = useAppStore();
 

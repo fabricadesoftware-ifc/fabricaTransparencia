@@ -5,9 +5,12 @@ const state = ref(['Santa Catarina'])
 
 <template>
   <header class="mx-16 mt-16 border-b-thin pb-2">
+    <p class="text-red">
+      ( TESTE DE DESEMPENHO )
+    </p>
     <NavComp />
     <h1 class="text-h3 font-weight-bold">
-      Painel de Transparência Financeira do
+      Acompanhamento da execução orçamentária do
       <span class="text-green-darken-3">IFC - Campus Araquari</span>
     </h1>
     <p class="py-6 text-grey">

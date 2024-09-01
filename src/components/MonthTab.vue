@@ -22,6 +22,10 @@ use([
 ]);
 
 provide(THEME_KEY, "default");
+
+onMounted(async () => {
+  await appStore.getCharts();
+});
 </script>
 
 <template>
@@ -34,8 +38,8 @@ provide(THEME_KEY, "default");
           :items="appStore.months"
           multiple
           variant="outlined"
-          hide-details
           v-model="monthsInput"
+          hide-details
           class="pt-3"
       ></v-autocomplete>
     </v-col>
@@ -49,8 +53,6 @@ provide(THEME_KEY, "default");
       ></v-btn>
     </v-col>
   </v-row>
-  {{ appStore.datas?.byMonthChart?.["Filtros"] }}
-  {{ monthsInput }}
   <div class="chart-pie">
     <v-chart class="chart" :option="appStore.byMonthChart" />
   </div>

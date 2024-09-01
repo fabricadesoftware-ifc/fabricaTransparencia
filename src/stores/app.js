@@ -50,6 +50,7 @@ export const useAppStore = defineStore("app",
       const months = computed(() => state.datas.months);
       const monthsInput = computed(() => state.monthsInputFilter)
       const mainDataframe = computed(() => state.datas.mainChart.dataframe);
+      const monthsFilter = computed(() => state.datas.byMonthChart['Filtro']);
       
       const mainChart = computed(() => {
         return {
@@ -174,19 +175,21 @@ export const useAppStore = defineStore("app",
         let data2 = []
         if(state.datas?.byMonthChart?.['Natureza Despesa']) {
           data1 = Object.keys(state.datas.byMonthChart['Natureza Despesa']).map(key => {
-            if (!(key in monthsFilter)) return
-            return {
-              value: state.datas.byMonthChart['Liquidado'][key],
-              name: state.datas.byMonthChart['Natureza Despesa'][key]
-            };
-          })
-          data2 = Object.keys(state.datas.byMonthChart['Natureza Despesa']).map(key => {
             return {
               value: state.datas.byMonthChart['Empenhado'][key],
               name: state.datas.byMonthChart['Natureza Despesa'][key]
             };
           })
+          data2 = Object.keys(state.datas.byMonthChart['Natureza Despesa']).map(key => {
+            return {
+              value: state.datas.byMonthChart['Liquidado'][key],
+              name: state.datas.byMonthChart['Natureza Despesa'][key]
+            };
+          })
         }
+
+        console.log('data1', data1)
+        console.log('data2', data2)
 
         return {
           legend: { left: '1%', right: '2%', itemGap: 24 },
@@ -214,7 +217,6 @@ export const useAppStore = defineStore("app",
               center: ['75%', '70%'],
               label: {
                 formatter: (params) => {
-                  console.log(params)
                   return `${params.percent}% | R$ ${params.value}`
                 }
               },
@@ -252,8 +254,9 @@ export const useAppStore = defineStore("app",
       }
 
       const filteringMonths = (param) => {
-        const lenghtMonth = Object.keys(state.datas?.byMonthChart?.["Natureza Despesa"]).lenght
-        state.datas.byMonthChart["Filtro"] =  param
+        // state.datas.byMonthChart["Filtro"] = param;
+        // monthsFilter.value = param;
+        console.log('param', param)
       }
 
       return {
@@ -271,6 +274,8 @@ export const useAppStore = defineStore("app",
         allNaturesChart,
         allNaturesDataframe,
         byMonthChart,
+        monthsFilter,
+        filteringMonths,
         setTheme,
         getCharts,
       };
