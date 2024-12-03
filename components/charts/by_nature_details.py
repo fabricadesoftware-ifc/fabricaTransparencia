@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
-from utils import *
-from classes.dataframe_manager import DataframeManager
+from core.utils import *
+from core.dataframe_manager import DataframeManager
 from streamlit_echarts import st_echarts
 
 def by_nature_details(advanced_report=False):

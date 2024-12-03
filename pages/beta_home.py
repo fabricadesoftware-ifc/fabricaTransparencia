@@ -8,21 +8,28 @@ from components.widgets.tabs_children import tabs_childrens
 
 
 def main():
-    st.title("Acompanhamento da execução orçamentária do :green[IFC - Campus Araquari]")
-    st.caption(":blue[Version 1.0.5]")
-    select_if()
+    st.write("__IFC - Araquari__")
+    st.title(":blue[Análise Avançada] de Recursos Empenhados e Liquidados")
+    # st.title("Análise de Recursos Empenhados e Liquidados dos :green[Institutos Federais]")
+    st.caption(
+        "Está é uma versão :red[beta], estamos trabalhando para construir um relatório mais completo. Por favor, nos ajude a melhorar, envie suas sugestões para o email: **teste@gmail.com**."
+    )
+    st.caption(":blue[Version 1.0.5*]")
+    select_if(advanced_report=True)
     indicators()
     main_chart()
+    main_chart(advanced_report=True)
     nature_all()
-    tabs_childrens()
+    nature_all(advanced_report=True)
+    tabs_childrens(advanced_report=True)
     st.divider()
     if st.button(
-        "Ver Análise Avançada (beta)",
-        help="Essa pagina é uma versão beta, clique aqui para ver mais detalhadamente os dados coletados.",
+        "Voltar a Página Principal",
+        help="Clique aqui para voltar a página principal.",
         use_container_width=True,
         type="primary",
     ):
-        st.switch_page("pages/beta_home.py")
+        st.switch_page("./home.py")
     if st.button(
         "Ver Dados Brutos",
         help="Clique aqui para ver os dados brutos.",
@@ -33,7 +40,7 @@ def main():
 
 if __name__ == "__main__":
     st.set_page_config(
-        page_title="Acompanhamento da execução orçamentária do IFC - Campus Araquari",
+        page_title="IF - Análise de Recursos Empenhados e Liquidados",
         page_icon=":chart_with_upwards_trend:",
         layout="wide",
         initial_sidebar_state="collapsed",

@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit_echarts import st_echarts
-from classes.dataframe_manager import DataframeManager
-from utils import brazilian_currency
+from core.dataframe_manager import DataframeManager
+from core.utils import brazilian_currency
 
 def main_chart(advanced_report=False):
     df_manager = DataframeManager()

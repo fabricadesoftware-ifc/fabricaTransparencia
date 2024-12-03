@@ -1,5 +1,5 @@
 import streamlit as st
-from classes.dataframe_manager import DataframeManager
+from core.dataframe_manager import DataframeManager
 
 def indicators():
     df_manager = DataframeManager()

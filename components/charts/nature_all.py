@@ -1,5 +1,5 @@
 import streamlit as st
-from classes.dataframe_manager import DataframeManager
+from core.dataframe_manager import DataframeManager
 from streamlit_echarts import st_echarts
 # from utils import brazilian_currency
 
@@ -41,5 +41,5 @@ def nature_all(advanced_report=False):
     else:
         st.caption("##")
         st.caption("### Total de Recursos Empenhados e Liquidados por Natureza de Despesa")
-        st_echarts(options=options, height="500px", key=f'{advanced_report}_id_dessa_porra')
+        st_echarts(options=options, height="500px", key=f'{advanced_report}_nature_chart')
 

@@ -1,5 +1,5 @@
 import streamlit as st
-from classes.dataframe_manager import DataframeManager
+from core.dataframe_manager import DataframeManager
 from streamlit_echarts import st_echarts
 
 def by_nature_details_month(advanced_report=False):

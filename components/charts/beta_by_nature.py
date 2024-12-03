@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
 from streamlit_echarts import st_echarts
-from utils import *
-from classes.dataframe_manager import DataframeManager
+from core.utils import *
+from core.dataframe_manager import DataframeManager
 
 def by_nature(onlyTable=False):
     df_manager = DataframeManager()  
