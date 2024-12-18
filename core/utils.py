@@ -211,7 +211,7 @@ def create_card_table(
 
 def main_table():
     df = pd.read_csv(
-        "../assets/data/xls/empenhos.csv", encoding="ISO-8859-1", sep=";", decimal=","
+        "../assets/data/xls/empenhos.csv", encoding="utf-8", sep=";", decimal=","
     )
 
     colunas_visiveis = [

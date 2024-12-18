@@ -17,7 +17,7 @@ class DataframeManager:
         if "df_master" not in st.session_state:
             st.session_state.df_master = pd.read_csv(
                 "assets/data/xls/empenhos.csv",
-                encoding="ISO-8859-1",
+                encoding="utf-8",
                 sep=";",
                 decimal=",",
             )
