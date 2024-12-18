@@ -23,6 +23,8 @@ class DataframeManager:
             )
         if "month" not in st.session_state:
             st.session_state.month = "01"
+        if "year" not in st.session_state:
+            st.session_state.year = "2024"
 
     def get_df_month_values(self, months):
         self.to_float()
@@ -416,13 +418,17 @@ class DataframeManager:
             df_by_nature_test_3,
         ]
 
-    def get_indicators(self):
+    def get_years(self):
+        return st.session_state.df_master["Mês"].str[-4:].unique().tolist()
+
+    def get_indicators(self, year="2024"):
         self.to_float()
-        df = st.session_state.df_master
+        df = st.session_state.df_master[
+            st.session_state.df_master["Mês"].str.endswith(year)
+        ]
         committed = df["Empenhado"].sum()
         settled = df["Liquidado"].sum()
         balance = committed - settled
-        # committed_formatted = "{:,.2f}".format(committed)
         committed_formatted = brazilian_currency(committed)
         settled_formatted = brazilian_currency(settled)
         balance_formatted = brazilian_currency(balance)
