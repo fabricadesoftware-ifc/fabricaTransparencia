@@ -55,41 +55,41 @@ def get_options_month_detail(df, tipo):
 
 
 def unformatted_months(month):
-    dict = {
-        "Janeiro": "01/2024",
-        "Fevereiro": "02/2024",
-        "Março": "03/2024",
-        "Abril": "04/2024",
-        "Maio": "05/2024",
-        "Junho": "06/2024",
-        "Julho": "07/2024",
-        "Agosto": "08/2024",
-        "Setembro": "09/2024",
-        "Outubro": "10/2024",
-        "Novembro": "11/2024",
-        "Dezembro": "12/2024",
+    month_dict = {
+        "Janeiro": "01",
+        "Fevereiro": "02",
+        "Março": "03",
+        "Abril": "04",
+        "Maio": "05",
+        "Junho": "06",
+        "Julho": "07",
+        "Agosto": "08",
+        "Setembro": "09",
+        "Outubro": "10",
+        "Novembro": "11",
+        "Dezembro": "12",
     }
-
-    return dict[month]
+    month_part, year_part = month.rsplit(" ", 1)
+    return f"{month_dict.get(month_part, month_part)}/{year_part}"
 
 
 def formatted_months(month):
-    dict = {
-        "01/2024": "Janeiro",
-        "02/2024": "Fevereiro",
-        "03/2024": "Março",
-        "04/2024": "Abril",
-        "05/2024": "Maio",
-        "06/2024": "Junho",
-        "07/2024": "Julho",
-        "08/2024": "Agosto",
-        "09/2024": "Setembro",
-        "10/2024": "Outubro",
-        "11/2024": "Novembro",
-        "12/2024": "Dezembro",
+    month_dict = {
+        "01": "Janeiro",
+        "02": "Fevereiro",
+        "03": "Março",
+        "04": "Abril",
+        "05": "Maio",
+        "06": "Junho",
+        "07": "Julho",
+        "08": "Agosto",
+        "09": "Setembro",
+        "10": "Outubro",
+        "11": "Novembro",
+        "12": "Dezembro",
     }
-
-    return dict[month]
+    month_part, year_part = month.split("/")
+    return f"{month_dict.get(month_part, month_part)} {year_part}"
 
 
 def brazilian_currency(money):
