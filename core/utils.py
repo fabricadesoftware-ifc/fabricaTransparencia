@@ -53,6 +53,53 @@ def get_options_month_detail(df, tipo):
         "series": series,
     }
 
+def get_options_year_detail(df, tipo):
+    series = []
+    if tipo == "Empenhado (R$)":
+        data = [
+            {
+                "value": df.loc[
+                    df["Natureza Despesa"] == natureza_despesa, "Empenhado (R$)"
+                ].values[0],
+                "name": natureza_despesa,
+            }
+            for natureza_despesa in df["Natureza Despesa"].unique()
+        ]
+    elif tipo == "Liquidado (R$)":
+        data = [
+            {
+                "value": df.loc[
+                    df["Natureza Despesa"] == natureza_despesa, "Liquidado (R$)"
+                ].values[0],
+                "name": natureza_despesa,
+            }
+            for natureza_despesa in df["Natureza Despesa"].unique()
+        ]
+    else:
+        data = []
+
+    series.append(
+        {
+            "type": "pie",
+            "id": str(uuid.uuid4()),
+            "radius": "50%",
+            "center": ["50%", "70%"],
+            "label": {"formatter": "{d}% | R$ {@[tipo]}"},
+            "encode": {
+                "itemName": "Natureza Despesa",
+                "value": "Empenhado (R$)",
+                "tooltip": "Empenhado (R$)",
+            },
+            "data": data
+        }
+    )
+
+    return {
+        "legend": {"left": "1%", "right": "2%"},
+        "tooltip": {"trigger": "axis", "showContent": False},
+        "series": series,
+    }
+
 
 def unformatted_months(month):
     month_dict = {
