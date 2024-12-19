@@ -1,12 +1,19 @@
 import streamlit as st
 from core.dataframe_manager import DataframeManager
 from streamlit_echarts import st_echarts
-# from utils import brazilian_currency
 
 def nature_all(advanced_report=False):
     df_manager = DataframeManager()
-    [option, get_dataframe_by_nature] = df_manager.get_df_by_all_nature()
-    # st.write(get_dataframe_by_nature)
+
+    year = st.selectbox(
+        "Selecione o Ano",
+        options=df_manager.get_years(),
+        index=0,
+        key="nature_all_year",
+    )
+
+    [option, get_dataframe_by_nature] = df_manager.get_df_by_all_nature(year)
+
     options = {
         **option,
         "title": {

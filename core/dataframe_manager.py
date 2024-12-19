@@ -208,17 +208,20 @@ class DataframeManager:
             df_main[["Mês", "Empenhado (R$)", "Liquidado (R$)"]],
         ]
 
-    def get_df_by_all_nature(self):
+    def get_df_by_all_nature(self, year="2024"):
         self.to_float()
         visible_columns = [
             "Natureza Despesa",
             "Empenhado",
             "Liquidado",
+            "Mês",
         ]
 
         all_nature = st.session_state.df_master["Natureza Despesa"].unique().tolist()
         df = st.session_state.df_master[visible_columns]
-        df_by_all_nature = df[df["Natureza Despesa"].isin(all_nature)]
+        df_by_all_nature = df[
+            df["Natureza Despesa"].isin(all_nature) & df["Mês"].str.endswith(year)
+        ]
         df_by_all_nature = (
             df_by_all_nature.groupby(["Natureza Despesa"])[["Empenhado", "Liquidado"]]
             .sum()
