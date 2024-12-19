@@ -5,7 +5,15 @@ from core.utils import brazilian_currency
 
 def main_chart(advanced_report=False):
     df_manager = DataframeManager()
-    [options, df] = df_manager.get_options_main()
+    
+    year = st.selectbox(
+        "Selecione o Ano",
+        options=df_manager.get_years(),
+        index=0,
+        key="main_chart_year",
+    )
+
+    [options, df] = df_manager.get_options_main(year)
     settled = st.session_state.df_master['Liquidado'].sum()
     committed = st.session_state.df_master['Empenhado'].sum() - settled
 

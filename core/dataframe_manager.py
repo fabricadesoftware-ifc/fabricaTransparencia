@@ -142,7 +142,7 @@ class DataframeManager:
 
         return [raw_datas, formatted_datas]
 
-    def get_options_main(self):
+    def get_options_main(self, year="2024"):
         self.to_float()
         visible_columns = [
             "Mês",
@@ -151,7 +151,10 @@ class DataframeManager:
         ]
 
         df = st.session_state.df_master[visible_columns]
-        df_main = df.groupby(["Mês"])[["Empenhado", "Liquidado"]].sum().reset_index()
+        df_main = df[df["Mês"].str.endswith(year)]
+        df_main = (
+            df_main.groupby(["Mês"])[["Empenhado", "Liquidado"]].sum().reset_index()
+        )
         df_main["Empenhado (R$)"] = df_main["Empenhado"].map("R$ {:,.2f}".format)
         df_main["Liquidado (R$)"] = df_main["Liquidado"].map("R$ {:,.2f}".format)
         df_main["Mês"] = df_main["Mês"].map(lambda x: formatted_months(x))
