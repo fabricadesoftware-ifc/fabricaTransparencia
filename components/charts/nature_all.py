@@ -2,14 +2,14 @@ import streamlit as st
 from core.dataframe_manager import DataframeManager
 from streamlit_echarts import st_echarts
 
-def nature_all(advanced_report=False):
+def nature_all(advanced_report=False, key="nature_all"):
     df_manager = DataframeManager()
 
     year = st.selectbox(
         "Selecione o Ano",
         options=df_manager.get_years(),
         index=0,
-        key="nature_all_year",
+        key=f"{key}_year",
     )
 
     [option, get_dataframe_by_nature] = df_manager.get_df_by_all_nature(year)

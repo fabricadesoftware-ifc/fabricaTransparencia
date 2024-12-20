@@ -17,10 +17,9 @@ def main():
     st.caption(":blue[Version 1.0.5*]")
     select_if(advanced_report=True)
     indicators()
-    main_chart()
     main_chart(advanced_report=True)
-    nature_all()
-    nature_all(advanced_report=True)
+    nature_all(key="nature_all_1")
+    nature_all(advanced_report=True, key="nature_all_2")
     tabs_childrens(advanced_report=True)
     st.divider()
     if st.button(
