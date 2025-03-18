@@ -7,12 +7,7 @@ def indicators():
     st.divider()
     st.caption("### Indicadores Gerais")
 
-    year = st.selectbox(
-        "Selecione o Ano",
-        options=df_manager.get_years(),
-        index=0,
-        key="indicators_year",
-    )
+    year = st.session_state.year
 
     [committed, settled, balance] = df_manager.get_indicators(year)
     row = st.columns(3)
