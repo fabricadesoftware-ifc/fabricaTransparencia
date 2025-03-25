@@ -19,7 +19,7 @@ def select_if(advanced_report=False):
             As informações são apresentadas considerando, ao longo do tempo, os valores de Despesas Empenhadas e Despesas Liquidadas.
             """
         )
-        layout_cols = st.columns((1, 1, 2))
+        layout_cols = st.columns((1, 1, 1, 3))
 
         with layout_cols[0]:
             state_option = st.selectbox(
@@ -39,6 +39,9 @@ def select_if(advanced_report=False):
                 ["2024", "2025", "..."],
             )
             st.session_state.year = year_option
+
+        with layout_cols[3]:
+            ...
 
     st.markdown(
         """<div style="color: #888; font-size: .8em;position: absolute; right: 0; bottom: -2em;">
