@@ -17,12 +17,14 @@ class DataframeManager:
         if "df_master" not in st.session_state:
             st.session_state.df_master = pd.read_csv(
                 "assets/data/xls/empenhos.csv",
-                encoding="ISO-8859-1",
+                encoding="utf-8",
                 sep=";",
                 decimal=",",
             )
         if "month" not in st.session_state:
             st.session_state.month = "01"
+        if "year" not in st.session_state:
+            st.session_state.year = "2024"
 
     def get_df_month_values(self, months):
         self.to_float()
@@ -140,7 +142,7 @@ class DataframeManager:
 
         return [raw_datas, formatted_datas]
 
-    def get_options_main(self):
+    def get_options_main(self, year="2024"):
         self.to_float()
         visible_columns = [
             "Mês",
@@ -149,7 +151,10 @@ class DataframeManager:
         ]
 
         df = st.session_state.df_master[visible_columns]
-        df_main = df.groupby(["Mês"])[["Empenhado", "Liquidado"]].sum().reset_index()
+        df_main = df[df["Mês"].str.endswith(year)]
+        df_main = (
+            df_main.groupby(["Mês"])[["Empenhado", "Liquidado"]].sum().reset_index()
+        )
         df_main["Empenhado (R$)"] = df_main["Empenhado"].map("R$ {:,.2f}".format)
         df_main["Liquidado (R$)"] = df_main["Liquidado"].map("R$ {:,.2f}".format)
         df_main["Mês"] = df_main["Mês"].map(lambda x: formatted_months(x))
@@ -203,17 +208,20 @@ class DataframeManager:
             df_main[["Mês", "Empenhado (R$)", "Liquidado (R$)"]],
         ]
 
-    def get_df_by_all_nature(self):
+    def get_df_by_all_nature(self, year="2024"):
         self.to_float()
         visible_columns = [
             "Natureza Despesa",
             "Empenhado",
             "Liquidado",
+            "Mês",
         ]
 
         all_nature = st.session_state.df_master["Natureza Despesa"].unique().tolist()
         df = st.session_state.df_master[visible_columns]
-        df_by_all_nature = df[df["Natureza Despesa"].isin(all_nature)]
+        df_by_all_nature = df[
+            df["Natureza Despesa"].isin(all_nature) & df["Mês"].str.endswith(year)
+        ]
         df_by_all_nature = (
             df_by_all_nature.groupby(["Natureza Despesa"])[["Empenhado", "Liquidado"]]
             .sum()
@@ -416,13 +424,17 @@ class DataframeManager:
             df_by_nature_test_3,
         ]
 
-    def get_indicators(self):
+    def get_years(self):
+        return st.session_state.df_master["Mês"].str[-4:].unique().tolist()
+
+    def get_indicators(self, year="2024"):
         self.to_float()
-        df = st.session_state.df_master
+        df = st.session_state.df_master[
+            st.session_state.df_master["Mês"].str.endswith(year)
+        ]
         committed = df["Empenhado"].sum()
         settled = df["Liquidado"].sum()
         balance = committed - settled
-        # committed_formatted = "{:,.2f}".format(committed)
         committed_formatted = brazilian_currency(committed)
         settled_formatted = brazilian_currency(settled)
         balance_formatted = brazilian_currency(balance)

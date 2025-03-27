@@ -53,43 +53,90 @@ def get_options_month_detail(df, tipo):
         "series": series,
     }
 
+def get_options_year_detail(df, tipo):
+    series = []
+    if tipo == "Empenhado (R$)":
+        data = [
+            {
+                "value": df.loc[
+                    df["Natureza Despesa"] == natureza_despesa, "Empenhado (R$)"
+                ].values[0],
+                "name": natureza_despesa,
+            }
+            for natureza_despesa in df["Natureza Despesa"].unique()
+        ]
+    elif tipo == "Liquidado (R$)":
+        data = [
+            {
+                "value": df.loc[
+                    df["Natureza Despesa"] == natureza_despesa, "Liquidado (R$)"
+                ].values[0],
+                "name": natureza_despesa,
+            }
+            for natureza_despesa in df["Natureza Despesa"].unique()
+        ]
+    else:
+        data = []
 
-def unformatted_months(month):
-    dict = {
-        "Janeiro": "01/2024",
-        "Fevereiro": "02/2024",
-        "Março": "03/2024",
-        "Abril": "04/2024",
-        "Maio": "05/2024",
-        "Junho": "06/2024",
-        "Julho": "07/2024",
-        "Agosto": "08/2024",
-        "Setembro": "09/2024",
-        "Outubro": "10/2024",
-        "Novembro": "11/2024",
-        "Dezembro": "12/2024",
+    series.append(
+        {
+            "type": "pie",
+            "id": str(uuid.uuid4()),
+            "radius": "50%",
+            "center": ["50%", "70%"],
+            "label": {"formatter": "{d}% | R$ {@[tipo]}"},
+            "encode": {
+                "itemName": "Natureza Despesa",
+                "value": "Empenhado (R$)",
+                "tooltip": "Empenhado (R$)",
+            },
+            "data": data
+        }
+    )
+
+    return {
+        "legend": {"left": "1%", "right": "2%"},
+        "tooltip": {"trigger": "axis", "showContent": False},
+        "series": series,
     }
 
-    return dict[month]
+
+def unformatted_months(month):
+    month_dict = {
+        "Janeiro": "01",
+        "Fevereiro": "02",
+        "Março": "03",
+        "Abril": "04",
+        "Maio": "05",
+        "Junho": "06",
+        "Julho": "07",
+        "Agosto": "08",
+        "Setembro": "09",
+        "Outubro": "10",
+        "Novembro": "11",
+        "Dezembro": "12",
+    }
+    month_part, year_part = month.rsplit(" ", 1)
+    return f"{month_dict.get(month_part, month_part)}/{year_part}"
 
 
 def formatted_months(month):
-    dict = {
-        "01/2024": "Janeiro",
-        "02/2024": "Fevereiro",
-        "03/2024": "Março",
-        "04/2024": "Abril",
-        "05/2024": "Maio",
-        "06/2024": "Junho",
-        "07/2024": "Julho",
-        "08/2024": "Agosto",
-        "09/2024": "Setembro",
-        "10/2024": "Outubro",
-        "11/2024": "Novembro",
-        "12/2024": "Dezembro",
+    month_dict = {
+        "01": "Janeiro",
+        "02": "Fevereiro",
+        "03": "Março",
+        "04": "Abril",
+        "05": "Maio",
+        "06": "Junho",
+        "07": "Julho",
+        "08": "Agosto",
+        "09": "Setembro",
+        "10": "Outubro",
+        "11": "Novembro",
+        "12": "Dezembro",
     }
-
-    return dict[month]
+    month_part, year_part = month.split("/")
+    return f"{month_dict.get(month_part, month_part)} {year_part}"
 
 
 def brazilian_currency(money):
@@ -211,7 +258,7 @@ def create_card_table(
 
 def main_table():
     df = pd.read_csv(
-        "../assets/data/xls/empenhos.csv", encoding="ISO-8859-1", sep=";", decimal=","
+        "../assets/data/xls/empenhos.csv", encoding="utf-8", sep=";", decimal=","
     )
 
     colunas_visiveis = [
