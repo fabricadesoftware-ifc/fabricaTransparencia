@@ -12,6 +12,11 @@ def select_if(advanced_report=False):
         year_option = "2024"
         if "year" not in st.session_state:
             st.session_state.year = year_option
+
+        campus_option = "araquari"
+        if "campus" not in st.session_state:
+            st.session_state.campus = campus_option.lower()
+
     else:
         st.write(
             """
@@ -30,8 +35,9 @@ def select_if(advanced_report=False):
         with layout_cols[1]:
             campus_option = st.selectbox(
                 f"Selecione o Campus",
-                ["Araquari", "..."],
+                ["Araquari", "Blumenau", "..."],
             )
+            st.session_state.campus = campus_option.lower()
 
         with layout_cols[2]:
             year_option = st.selectbox(
