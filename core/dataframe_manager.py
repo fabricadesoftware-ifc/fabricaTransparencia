@@ -27,7 +27,7 @@ class DataframeManager:
             or st.session_state.get("last_campus") != st.session_state.campus
         ):
             st.session_state.df_master = pd.read_csv(
-                f"assets/data/xls/empenhos_{st.session_state.campus}.csv",
+                f"assets/data/empenhos_{st.session_state.campus}.csv",
                 encoding="utf-8",
                 sep=";",
                 decimal=",",

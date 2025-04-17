@@ -33,7 +33,7 @@ def select_if(advanced_report=False):
                 ["SC", "..."],
             )
 
-        campi = get_campi("./assets/data/xls")
+        campi = get_campi("./assets/data/")
 
         with layout_cols[1]:
             campus_option = st.selectbox(
