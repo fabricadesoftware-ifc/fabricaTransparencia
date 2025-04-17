@@ -25,17 +25,11 @@ def select_if(advanced_report=False):
             As informações são apresentadas considerando, ao longo do tempo, os valores de Despesas Empenhadas e Despesas Liquidadas.
             """
         )
-        layout_cols = st.columns((1, 1, 1, 3))
-
-        with layout_cols[0]:
-            state_option = st.selectbox(
-                f"Selecione o Estado",
-                ["SC", "..."],
-            )
+        layout_cols = st.columns((1, 1, 3))
 
         campi = get_campi("./assets/data/")
 
-        with layout_cols[1]:
+        with layout_cols[0]:
             campus_option = st.selectbox(
                 f"Selecione o Campus",
                 campi,
@@ -48,14 +42,14 @@ def select_if(advanced_report=False):
             )
             st.session_state.campus = campus_option.lower().replace(" ", "_")
 
-        with layout_cols[2]:
+        with layout_cols[1]:
             year_option = st.selectbox(
                 f"Selecione o Ano",
                 ["2024", "2025", "..."],
             )
             st.session_state.year = year_option
 
-        with layout_cols[3]:
+        with layout_cols[2]:
             ...
 
     st.markdown(
