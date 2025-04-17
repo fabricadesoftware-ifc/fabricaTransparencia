@@ -1,4 +1,5 @@
 import streamlit as st
+from core.utils import get_campi
 
 
 def select_if(advanced_report=False):
@@ -13,9 +14,9 @@ def select_if(advanced_report=False):
         if "year" not in st.session_state:
             st.session_state.year = year_option
 
-        campus_option = "araquari"
+        campus_option = "Araquari"
         if "campus" not in st.session_state:
-            st.session_state.campus = campus_option.lower()
+            st.session_state.campus = campus_option
 
     else:
         st.write(
@@ -32,12 +33,20 @@ def select_if(advanced_report=False):
                 ["SC", "..."],
             )
 
+        campi = get_campi("./assets/data/xls")
+
         with layout_cols[1]:
             campus_option = st.selectbox(
                 f"Selecione o Campus",
-                ["Araquari", "Blumenau", "..."],
+                campi,
+                index=(
+                    campi.index(st.session_state.get("campus", campi[0]))
+                    if "campus" in st.session_state
+                    and st.session_state["campus"] in campi
+                    else 0
+                ),
             )
-            st.session_state.campus = campus_option.lower()
+            st.session_state.campus = campus_option.lower().replace(" ", "_")
 
         with layout_cols[2]:
             year_option = st.selectbox(

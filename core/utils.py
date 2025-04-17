@@ -3,6 +3,8 @@ import altair as alt
 import streamlit as st
 import uuid
 import random
+import os
+import re
 from babel.numbers import format_currency
 
 
@@ -53,6 +55,7 @@ def get_options_month_detail(df, tipo):
         "series": series,
     }
 
+
 def get_options_year_detail(df, tipo):
     series = []
     if tipo == "Empenhado (R$)":
@@ -90,7 +93,7 @@ def get_options_year_detail(df, tipo):
                 "value": "Empenhado (R$)",
                 "tooltip": "Empenhado (R$)",
             },
-            "data": data
+            "data": data,
         }
     )
 
@@ -285,3 +288,21 @@ def main_table():
     df_mes["Liquidado Formatado"] = df_mes["Liquidado"].map("R$ {:,.2f}".format)
 
     return df_mes
+
+
+def get_campi(folder):
+    """
+    Busca todos os campus presentes no diretório de arquivos pelo padrão de nome do arquivo CSV.
+    """
+    pattern = re.compile(r"empenhos_(\w+(?:_\w+)*)\.csv$", re.IGNORECASE)
+    campi = []
+
+    for file_name in os.listdir(folder):
+        match = pattern.match(file_name)
+        if match:
+            city = match.group(1)
+            city_name = " ".join([part.capitalize() for part in city.split("_")])
+            campi.append(city_name)
+
+    campi.sort()
+    return campi
