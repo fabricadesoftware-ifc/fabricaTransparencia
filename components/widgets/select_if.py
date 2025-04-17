@@ -1,8 +1,11 @@
 import streamlit as st
 from core.utils import get_campi
+from core.dataframe_manager import DataframeManager
 
 
 def select_if(advanced_report=False):
+    df_manager = DataframeManager()
+
     if advanced_report:
         st.write(
             """
@@ -42,10 +45,12 @@ def select_if(advanced_report=False):
             )
             st.session_state.campus = campus_option.lower().replace(" ", "_")
 
+        anos = df_manager.get_years()
+
         with layout_cols[1]:
             year_option = st.selectbox(
                 f"Selecione o Ano",
-                ["2024", "2025", "..."],
+                anos,
             )
             st.session_state.year = year_option
 
