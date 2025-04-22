@@ -9,7 +9,7 @@ def select_if(advanced_report=False):
     if advanced_report:
         st.write(
             """
-            Este projeto tem por objetivo possibilitar à comunidade o acompanhamento da execução do orçamento do campus.
+            Este projeto tem por objetivo possibilitar à comunidade o acompanhamento da execução do orçamento dos campi.
             As informações são apresentadas considerando, ao longo do tempo, os valores de Despesas Empenhadas e Despesas Liquidadas.
             """
         )
@@ -24,7 +24,7 @@ def select_if(advanced_report=False):
     else:
         st.write(
             """
-            Este projeto tem por objetivo possibilitar à comunidade o acompanhamento da execução do orçamento do campus.
+            Este projeto tem por objetivo possibilitar à comunidade o acompanhamento da execução do orçamento dos campi.
             As informações são apresentadas considerando, ao longo do tempo, os valores de Despesas Empenhadas e Despesas Liquidadas.
             """
         )
@@ -59,8 +59,8 @@ def select_if(advanced_report=False):
 
     st.markdown(
         """<div style="color: #888; font-size: .8em;position: absolute; right: 0; bottom: -2em;">
-        Professor Responsavel: <a href="www.github.com/ldmfabio" style="padding-right: 1em">Fábio Longo de Moura</a> 
-        Aluno Responsavel: <a href="www.github.com/mateus-lopes">Mateus Lopes Albano</a>
+        Professor Responsável: <a href="www.github.com/ldmfabio" style="padding-right: 1em">Fábio Longo de Moura</a> 
+        Alunos Responsáveis: <a href="www.github.com/mateus-lopes">Mateus L. Albano</a>, <a href="www.github.com/gabriel04alves">Gabriel Alves</a>, <a href="www.github.com/mariaeduardanichelle">Maria Eduarda N. Ferreira</a>,  
     </div>""",
         unsafe_allow_html=True,
     )

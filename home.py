@@ -8,7 +8,9 @@ from components.widgets.tabs_children import tabs_childrens
 
 
 def main():
-    st.title("Acompanhamento da execução orçamentária do :green[IFC - Campus Araquari]")
+    st.title(
+        "Acompanhamento da execução orçamentária do :green[Instituto Federal Catarinense]"
+    )
     st.caption(":blue[Version 1.0.5]")
     select_if()
     indicators()
@@ -17,16 +19,10 @@ def main():
     tabs_childrens()
     st.divider()
     if st.button(
-        "Ver Análise Avançada (beta)",
-        help="Essa pagina é uma versão beta, clique aqui para ver mais detalhadamente os dados coletados.",
-        use_container_width=True,
-        type="primary",
-    ):
-        st.switch_page("pages/beta_home.py")
-    if st.button(
         "Ver Dados Brutos",
         help="Clique aqui para ver os dados brutos.",
         use_container_width=True,
+        type="primary",
     ):
         st.switch_page("pages/dados_brutos.py")
 
@@ -38,4 +34,29 @@ if __name__ == "__main__":
         layout="wide",
         initial_sidebar_state="collapsed",
     )
+
+    st.markdown(
+        """
+            <style>
+                [data-testid="stSidebar"] {display: none;}
+                [data-testid="stSidebarNav"] {display: none;}
+                .ea3mdgi8 {
+                    padding: 0 3%;
+                }
+                .block-container {
+                    padding-left: 1rem;
+                    padding-right: 1rem;
+                }
+                .eczjsme5{
+                    display: none;
+                }
+                .ef3psqc5{
+                    display: none;
+                }
+                
+            </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
     main()
