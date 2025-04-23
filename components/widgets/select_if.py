@@ -59,8 +59,8 @@ def select_if(advanced_report=False):
 
     st.markdown(
         """<div style="color: #888; font-size: .8em;position: absolute; right: 0; bottom: -2em;">
-        Professor Responsável: <a href="www.github.com/ldmfabio" style="padding-right: 1em">Fábio Longo de Moura</a> 
-        Alunos Responsáveis: <a href="www.github.com/mateus-lopes">Mateus L. Albano</a>, <a href="www.github.com/gabriel04alves">Gabriel Alves</a>, <a href="www.github.com/mariaeduardanichelle">Maria Eduarda N. Ferreira</a>,  
+        Professor Responsável: <a href="https://github.com/ldmfabio" style="padding-right: 1em">Fábio Longo de Moura</a> 
+        Alunos Responsáveis: <a href="https://github.com/mateus-lopes">Mateus L. Albano</a>, <a href="https://github.com/gabriel04alves">Gabriel Alves</a>, <a href="https://github.com/mariaeduardanichelle">Maria Eduarda N. Ferreira</a>,  
     </div>""",
         unsafe_allow_html=True,
     )
