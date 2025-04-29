@@ -3,6 +3,8 @@ import altair as alt
 import streamlit as st
 import uuid
 import random
+import os
+import re
 from babel.numbers import format_currency
 
 
@@ -10,38 +12,40 @@ def get_options_month_detail(df, tipo):
     series = []
     if tipo == "Empenhado":
         data = [
-            { 
-                'value': df.loc[df['Natureza Despesa'] == natureza_despesa, 'Empenhado'].values[0], 
-                'name': natureza_despesa 
+            {
+                "value": df.loc[
+                    df["Natureza Despesa"] == natureza_despesa, "Empenhado"
+                ].values[0],
+                "name": natureza_despesa,
             }
-            for natureza_despesa in df['Natureza Despesa'].unique()
+            for natureza_despesa in df["Natureza Despesa"].unique()
         ]
     elif tipo == "Liquidado":
         data = [
-            { 
-                'value': df.loc[df['Natureza Despesa'] == natureza_despesa, 'Liquidado'].values[0], 
-                'name': natureza_despesa 
+            {
+                "value": df.loc[
+                    df["Natureza Despesa"] == natureza_despesa, "Liquidado"
+                ].values[0],
+                "name": natureza_despesa,
             }
-            for natureza_despesa in df['Natureza Despesa'].unique()
+            for natureza_despesa in df["Natureza Despesa"].unique()
         ]
     else:
         data = []
-        
+
     series.append(
         {
             "type": "pie",
             "id": str(uuid.uuid4()),
-            "radius": '50%',
+            "radius": "50%",
             "center": ["50%", "70%"],
-            "label": {
-                "formatter": "{d}% | R$ {@[tipo]}"
-            },
+            "label": {"formatter": "{d}% | R$ {@[tipo]}"},
             "encode": {
                 "itemName": "Natureza Despesa",
                 "value": "Empenhado",
                 "tooltip": "Empenhado",
             },
-            "data": data
+            "data": data,
         }
     )
 
@@ -49,49 +53,98 @@ def get_options_month_detail(df, tipo):
         "legend": {"left": "1%", "right": "2%"},
         "tooltip": {"trigger": "axis", "showContent": False},
         "series": series,
-        
+    }
+
+
+def get_options_year_detail(df, tipo):
+    series = []
+    if tipo == "Empenhado (R$)":
+        data = [
+            {
+                "value": df.loc[
+                    df["Natureza Despesa"] == natureza_despesa, "Empenhado (R$)"
+                ].values[0],
+                "name": natureza_despesa,
+            }
+            for natureza_despesa in df["Natureza Despesa"].unique()
+        ]
+    elif tipo == "Liquidado (R$)":
+        data = [
+            {
+                "value": df.loc[
+                    df["Natureza Despesa"] == natureza_despesa, "Liquidado (R$)"
+                ].values[0],
+                "name": natureza_despesa,
+            }
+            for natureza_despesa in df["Natureza Despesa"].unique()
+        ]
+    else:
+        data = []
+
+    series.append(
+        {
+            "type": "pie",
+            "id": str(uuid.uuid4()),
+            "radius": "50%",
+            "center": ["50%", "70%"],
+            "label": {"formatter": "{d}% | R$ {@[tipo]}"},
+            "encode": {
+                "itemName": "Natureza Despesa",
+                "value": "Empenhado (R$)",
+                "tooltip": "Empenhado (R$)",
+            },
+            "data": data,
+        }
+    )
+
+    return {
+        "legend": {"left": "1%", "right": "2%"},
+        "tooltip": {"trigger": "axis", "showContent": False},
+        "series": series,
     }
 
 
 def unformatted_months(month):
-    dict = {
-        "Janeiro": "01/2024",
-        "Fevereiro": "02/2024",
-        "Março": "03/2024",
-        "Abril": "04/2024",
-        "Maio": "05/2024",
-        "Junho": "06/2024",
-        "Julho": "07/2024",
-        "Agosto": "08/2024",
-        "Setembro": "09/2024",
-        "Outubro": "10/2024",
-        "Novembro": "11/2024",
-        "Dezembro": "12/2024",
+    month_dict = {
+        "Janeiro": "01",
+        "Fevereiro": "02",
+        "Março": "03",
+        "Abril": "04",
+        "Maio": "05",
+        "Junho": "06",
+        "Julho": "07",
+        "Agosto": "08",
+        "Setembro": "09",
+        "Outubro": "10",
+        "Novembro": "11",
+        "Dezembro": "12",
     }
-
-    return dict[month]
+    month_part, year_part = month.rsplit(" ", 1)
+    return f"{month_dict.get(month_part, month_part)}/{year_part}"
 
 
 def formatted_months(month):
-    dict = {
-        "01/2024": "Janeiro",
-        "02/2024": "Fevereiro",
-        "03/2024": "Março",
-        "04/2024": "Abril",
-        "05/2024": "Maio",
-        "06/2024": "Junho",
-        "07/2024": "Julho",
-        "08/2024": "Agosto",
-        "09/2024": "Setembro",
-        "10/2024": "Outubro",
-        "11/2024": "Novembro",
-        "12/2024": "Dezembro",
+    month_dict = {
+        "01": "Janeiro",
+        "02": "Fevereiro",
+        "03": "Março",
+        "04": "Abril",
+        "05": "Maio",
+        "06": "Junho",
+        "07": "Julho",
+        "08": "Agosto",
+        "09": "Setembro",
+        "10": "Outubro",
+        "11": "Novembro",
+        "12": "Dezembro",
     }
+    month_part, year_part = month.split("/")
+    return f"{month_dict.get(month_part, month_part)} {year_part}"
 
-    return dict[month]
 
 def brazilian_currency(money):
-    return format_currency(money, 'BRL', locale='pt_BR')
+    return format_currency(money, "BRL", locale="pt_BR")
+
 
 def get_options_month(df):
     df.columns = [
@@ -123,7 +176,13 @@ def get_options_month(df):
             "axisLabel": {"margin": 20},
         },
         "yAxis": {"gridIndex": 0},
-        "grid": {"top": "20%", "left": "1%", "right": "2%", "bottom": "0%", "containLabel": True},
+        "grid": {
+            "top": "20%",
+            "left": "1%",
+            "right": "2%",
+            "bottom": "0%",
+            "containLabel": True,
+        },
         "series": series,
     }
 
@@ -202,7 +261,7 @@ def create_card_table(
 
 def main_table():
     df = pd.read_csv(
-        "../assets/xls/empenhos.csv", encoding="ISO-8859-1", sep=";", decimal=","
+        "../assets/data/empenhos.csv", encoding="utf-8", sep=";", decimal=","
     )
 
     colunas_visiveis = [
@@ -229,3 +288,21 @@ def main_table():
     df_mes["Liquidado Formatado"] = df_mes["Liquidado"].map("R$ {:,.2f}".format)
 
     return df_mes
+
+
+def get_campi(folder):
+    """
+    Busca todos os campus presentes no diretório de arquivos pelo padrão de nome do arquivo CSV.
+    """
+    pattern = re.compile(r"empenhos_(\w+(?:_\w+)*)\.csv$", re.IGNORECASE)
+    campi = []
+
+    for file_name in os.listdir(folder):
+        match = pattern.match(file_name)
+        if match:
+            city = match.group(1)
+            city_name = " ".join([part.capitalize() for part in city.split("_")])
+            campi.append(city_name)
+
+    campi.sort()
+    return campi
