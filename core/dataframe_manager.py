@@ -433,7 +433,15 @@ class DataframeManager:
         ]
 
     def get_years(self):
-        return st.session_state.df_master["Mês"].str[-4:].unique().tolist()
+        anos = (
+            st.session_state.df_master["Mês"]
+            .astype(str)
+            .str[-4:]
+            .drop_duplicates()
+            .sort_values()
+            .tolist()
+        )
+        return anos
 
     def get_indicators(self, year="2024", campus="araquari"):
         self.to_float()

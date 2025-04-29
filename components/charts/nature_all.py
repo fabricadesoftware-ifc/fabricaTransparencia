@@ -3,7 +3,7 @@ from core.dataframe_manager import DataframeManager
 from streamlit_echarts import st_echarts
 
 
-def nature_all(advanced_report=False, key="nature_all"):
+def nature_all(advanced_report=True, key="nature_all"):
     df_manager = DataframeManager()
 
     year = st.session_state.year
@@ -35,7 +35,9 @@ def nature_all(advanced_report=False, key="nature_all"):
     }
 
     if advanced_report:
-        st.table(get_dataframe_by_nature)
+        expander = st.expander("Visualizar dados completos do gráfico")
+        expander.table(get_dataframe_by_nature)
+
     else:
         st.caption("##")
         st.caption(

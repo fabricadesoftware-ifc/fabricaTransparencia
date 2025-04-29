@@ -1,12 +1,15 @@
 import streamlit as st
 from core.utils import get_campi
+from core.dataframe_manager import DataframeManager
 
 
 def select_if(advanced_report=False):
+    df_manager = DataframeManager()
+
     if advanced_report:
         st.write(
             """
-            Este projeto tem por objetivo possibilitar à comunidade o acompanhamento da execução do orçamento do campus.
+            Este projeto tem por objetivo possibilitar à comunidade o acompanhamento da execução do orçamento dos campi.
             As informações são apresentadas considerando, ao longo do tempo, os valores de Despesas Empenhadas e Despesas Liquidadas.
             """
         )
@@ -21,7 +24,7 @@ def select_if(advanced_report=False):
     else:
         st.write(
             """
-            Este projeto tem por objetivo possibilitar à comunidade o acompanhamento da execução do orçamento do campus.
+            Este projeto tem por objetivo possibilitar à comunidade o acompanhamento da execução do orçamento dos campi.
             As informações são apresentadas considerando, ao longo do tempo, os valores de Despesas Empenhadas e Despesas Liquidadas.
             """
         )
@@ -42,10 +45,12 @@ def select_if(advanced_report=False):
             )
             st.session_state.campus = campus_option.lower().replace(" ", "_")
 
+        anos = df_manager.get_years()
+
         with layout_cols[1]:
             year_option = st.selectbox(
                 f"Selecione o Ano",
-                ["2024", "2025", "..."],
+                anos,
             )
             st.session_state.year = year_option
 
@@ -54,8 +59,8 @@ def select_if(advanced_report=False):
 
     st.markdown(
         """<div style="color: #888; font-size: .8em;position: absolute; right: 0; bottom: -2em;">
-        Professor Responsavel: <a href="www.github.com/ldmfabio" style="padding-right: 1em">Fábio Longo de Moura</a> 
-        Aluno Responsavel: <a href="www.github.com/mateus-lopes">Mateus Lopes Albano</a>
+        Professor Responsável: <a href="https://github.com/ldmfabio" style="padding-right: 1em">Fábio Longo de Moura</a> 
+        Alunos Responsáveis: <a href="https://github.com/mateus-lopes">Mateus L. Albano</a>, <a href="https://github.com/gabriel04alves">Gabriel Alves</a>, <a href="https://github.com/mariaeduardanichelle">Maria Eduarda N. Ferreira</a>,  
     </div>""",
         unsafe_allow_html=True,
     )
