@@ -14,17 +14,25 @@ class DataframeManager:
     def init_session_state(self):
         if "error_message" not in st.session_state:
             st.session_state.error_message = ""
-        if "df_master" not in st.session_state:
-            st.session_state.df_master = pd.read_csv(
-                "assets/data/xls/empenhos.csv",
-                encoding="utf-8",
-                sep=";",
-                decimal=",",
-            )
+
         if "month" not in st.session_state:
             st.session_state.month = "01"
         if "year" not in st.session_state:
             st.session_state.year = "2024"
+        if "campus" not in st.session_state:
+            st.session_state.campus = "araquari"
+
+        if (
+            "df_master" not in st.session_state
+            or st.session_state.get("last_campus") != st.session_state.campus
+        ):
+            st.session_state.df_master = pd.read_csv(
+                f"assets/data/empenhos_{st.session_state.campus}.csv",
+                encoding="utf-8",
+                sep=";",
+                decimal=",",
+            )
+            st.session_state.last_campus = st.session_state.campus
 
     def get_df_month_values(self, months):
         self.to_float()
@@ -427,7 +435,7 @@ class DataframeManager:
     def get_years(self):
         return st.session_state.df_master["Mês"].str[-4:].unique().tolist()
 
-    def get_indicators(self, year="2024"):
+    def get_indicators(self, year="2024", campus="araquari"):
         self.to_float()
         df = st.session_state.df_master[
             st.session_state.df_master["Mês"].str.endswith(year)

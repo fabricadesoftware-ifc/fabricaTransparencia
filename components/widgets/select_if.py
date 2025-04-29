@@ -1,4 +1,5 @@
 import streamlit as st
+from core.utils import get_campi
 
 
 def select_if(advanced_report=False):
@@ -12,6 +13,11 @@ def select_if(advanced_report=False):
         year_option = "2024"
         if "year" not in st.session_state:
             st.session_state.year = year_option
+
+        campus_option = "Araquari"
+        if "campus" not in st.session_state:
+            st.session_state.campus = campus_option
+
     else:
         st.write(
             """
@@ -19,28 +25,31 @@ def select_if(advanced_report=False):
             As informações são apresentadas considerando, ao longo do tempo, os valores de Despesas Empenhadas e Despesas Liquidadas.
             """
         )
-        layout_cols = st.columns((1, 1, 1, 3))
+        layout_cols = st.columns((1, 1, 3))
+
+        campi = get_campi("./assets/data/")
 
         with layout_cols[0]:
-            state_option = st.selectbox(
-                f"Selecione o Estado",
-                ["SC", "..."],
-            )
-
-        with layout_cols[1]:
             campus_option = st.selectbox(
                 f"Selecione o Campus",
-                ["Araquari", "..."],
+                campi,
+                index=(
+                    campi.index(st.session_state.get("campus", campi[0]))
+                    if "campus" in st.session_state
+                    and st.session_state["campus"] in campi
+                    else 0
+                ),
             )
+            st.session_state.campus = campus_option.lower().replace(" ", "_")
 
-        with layout_cols[2]:
+        with layout_cols[1]:
             year_option = st.selectbox(
                 f"Selecione o Ano",
                 ["2024", "2025", "..."],
             )
             st.session_state.year = year_option
 
-        with layout_cols[3]:
+        with layout_cols[2]:
             ...
 
     st.markdown(
