@@ -6,8 +6,8 @@ Este projeto tem por objetivo possibilitar à comunidade o acompanhamento da exe
 
 __Link do projeto__ 
 
-https://transparencia.araquari.ifc.edu.br/
+https://transparencia.fabricadesoftware.araquari.ifc.edu.br/
 
 __Responsáveis__ 
 
-Professor Fábio Longo de Moura e aluno Mateus Lopes Albano (BSI).
+Professor Fábio Longo de Moura com os alunos Gabriel Alves, Maria Eduarda Nichelle Ferreira e Mateus Lopes Albano (BSI).

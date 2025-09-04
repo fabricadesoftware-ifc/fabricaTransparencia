@@ -13,7 +13,7 @@ def select_if(advanced_report=False):
             As informações são apresentadas considerando, ao longo do tempo, os valores de Despesas Empenhadas e Despesas Liquidadas.
             """
         )
-        year_option = "2024"
+        year_option = "2025"
         if "year" not in st.session_state:
             st.session_state.year = year_option
 

@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import streamlit as st
+import datetime
 from streamlit.logger import get_logger
 from core.utils import *
 
@@ -18,7 +19,7 @@ class DataframeManager:
         if "month" not in st.session_state:
             st.session_state.month = "01"
         if "year" not in st.session_state:
-            st.session_state.year = "2024"
+            st.session_state.year = str(datetime.datetime.now().year)
         if "campus" not in st.session_state:
             st.session_state.campus = "araquari"
 
@@ -150,7 +151,7 @@ class DataframeManager:
 
         return [raw_datas, formatted_datas]
 
-    def get_options_main(self, year="2024"):
+    def get_options_main(self, year="2025"):
         self.to_float()
         visible_columns = [
             "Mês",
@@ -163,6 +164,7 @@ class DataframeManager:
         df_main = (
             df_main.groupby(["Mês"])[["Empenhado", "Liquidado"]].sum().reset_index()
         )
+        df_main = df_main.sort_values("Mês")
         df_main["Empenhado (R$)"] = df_main["Empenhado"].map("R$ {:,.2f}".format)
         df_main["Liquidado (R$)"] = df_main["Liquidado"].map("R$ {:,.2f}".format)
         df_main["Mês"] = df_main["Mês"].map(lambda x: formatted_months(x))
@@ -216,7 +218,7 @@ class DataframeManager:
             df_main[["Mês", "Empenhado (R$)", "Liquidado (R$)"]],
         ]
 
-    def get_df_by_all_nature(self, year="2024"):
+    def get_df_by_all_nature(self, year="2025"):
         self.to_float()
         visible_columns = [
             "Natureza Despesa",
@@ -438,12 +440,12 @@ class DataframeManager:
             .astype(str)
             .str[-4:]
             .drop_duplicates()
-            .sort_values()
+            .sort_values(ascending=False)
             .tolist()
         )
         return anos
 
-    def get_indicators(self, year="2024", campus="araquari"):
+    def get_indicators(self, year="2025", campus="araquari"):
         self.to_float()
         df = st.session_state.df_master[
             st.session_state.df_master["Mês"].str.endswith(year)
